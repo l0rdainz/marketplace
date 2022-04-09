@@ -13,6 +13,8 @@ import MarketplaceAddress from '../contractsData/Marketplace-address.json'
 import NFTAbi from '../contractsData/NFT.json'
 import NFTAddress from '../contractsData/NFT-address.json'
 import { useState } from 'react'
+import coinsAbi from '../contractsData/Victcoins.json'
+import coinsAddress from '../contractsData/Victcoins-address.json'
 import { ethers } from "ethers"
 import { Spinner } from 'react-bootstrap'
 
@@ -23,6 +25,7 @@ function App() {
   const [account, setAccount] = useState(null)
   const [nft, setNFT] = useState({})
   const [marketplace, setMarketplace] = useState({})
+  const [coins,setCoins]=useState({})
   // MetaMask Login/Connect
   const web3Handler = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -48,6 +51,8 @@ function App() {
     setMarketplace(marketplace)
     const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer)
     setNFT(nft)
+    const coins = new ethers.Contract(coinsAddress.address, coinsAbi.abi, signer)
+    setCoins(coins)
     setLoading(false)
   }
 
@@ -55,7 +60,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <>
-          <Navigation web3Handler={web3Handler} account={account} />
+          <Navigation web3Handler={web3Handler} account={account} coins={coins} />
         </>
         <div>
           {loading ? (

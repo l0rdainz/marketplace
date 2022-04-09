@@ -3,8 +3,18 @@ import {
 } from "react-router-dom";
 import { Navbar, Nav, Button, Container } from 'react-bootstrap'
 import market from './market.png'
+import { useState } from 'react'
 
-const Navigation = ({ web3Handler, account }) => {
+const Navigation = ({ web3Handler, account,coins }) => {
+    const [balance, setBalance] = useState(0)
+    async function getbalance(){
+        const value = await coins.balanceOf(account)
+        const number = parseInt(value._hex,16) 
+        setBalance(number)
+        console.log(number)
+    }
+
+
     return (
         <Navbar expand="lg" bg="secondary" variant="dark">
             <Container>
@@ -35,6 +45,9 @@ const Navigation = ({ web3Handler, account }) => {
                         ) : (
                             <Button onClick={web3Handler} variant="outline-light">Connect Wallet</Button>
                         )}
+                        <Nav className="me-auto">
+                           <Button variant="outline-light" onClick={getbalance}>Refresh Balance</Button>{balance} VICT
+                            </Nav>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
